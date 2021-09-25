@@ -102,21 +102,3 @@ def get_tweet_sentiment(tweet):
     else: 
         sentiment = 'negative'
     return polarity, sentiment
-
-def check_for_duplicates(tweet_id, tweet_ids):
-    if tweet_id in tweet_ids:
-        original_status = False
-    else:
-        original_status = True
-    return original_status
-
-def restructure_datetime(datetime):
-    year = datetime[-4:]
-    month = datetime[4:7]
-    date = datetime[8:10]
-    hour = datetime[11:13]
-    minute = datetime[14:16]
-    second = datetime[17:19]
-    
-    restructured_datetime = year + month + date + hour + minute + second
-    return restructured_datetime
