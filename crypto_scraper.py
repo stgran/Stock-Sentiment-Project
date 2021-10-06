@@ -1,7 +1,6 @@
 import os
 import requests
 from dotenv import load_dotenv
-import requests
 import pandas as pd
 import sqlalchemy
 
@@ -24,7 +23,7 @@ mysql_host = os.getenv('MYSQL_HOST')
 mysql_db = os.getenv('MYSQL_DB')
 
 # Setting up connection to SQL database
-engine_str = 'mysql+pymysql://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
+engine_str = 'mariadb+mariadbconnector://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
 engine = sqlalchemy.create_engine(engine_str)
 
 # Pulling stock data using the API
