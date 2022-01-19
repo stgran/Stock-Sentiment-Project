@@ -23,8 +23,16 @@ mysql_host = os.getenv('MYSQL_HOST')
 mysql_db = os.getenv('MYSQL_DB')
 
 # Setting up connection to SQL database
-engine_str = 'mariadb+mariadbconnector://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
-engine = sqlalchemy.create_engine(engine_str)
+# I have set this up to handle either mariadb or mysql because I run this on two
+# different computers which use these different SQL databases.
+try:
+    engine_str = 'mariadb+mariadbconnector://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
+    engine = sqlalchemy.create_engine(engine_str)
+    print('Using mariadb database')
+except:
+    engine_str = 'mysql+pymysql://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
+    engine = sqlalchemy.create_engine(engine_str)
+    print('Using mysql database')
 
 # Pulling stock data using the API
 ts = TimeSeries(key=ALPHAVANTAGE_API_KEY, output_format='pandas', indexing_type='date')
