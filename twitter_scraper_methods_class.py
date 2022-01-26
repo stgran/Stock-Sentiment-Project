@@ -71,7 +71,7 @@ class TwitterScraper():
             retweets to the OT and distribute the rest to the RTs (if there are any) proportionally.
     '''
 
-    def __init__(self, query_terms, db_table, use_since_id=True):
+    def __init__(self, query_terms, db_table, use_since_id=True, requests_limit=15):
         # Connect to our SQL database
         self.db_table = db_table
         self.engine = self.connect_to_db()
@@ -82,9 +82,14 @@ class TwitterScraper():
         # Query terms
         self.query_terms = query_terms
 
+        # Requests limit
+        self.requests_limit = requests_limit
+
     def connect_to_db(self):
         '''
-        NEEDS DOCUMENTATION
+        Function to connect to the database used to store results.
+        This code is run with both MySQL and MariaDB databases, which are
+        functionally the same, but require slightly different connection strings.
         '''
         # Getting SQL database credentials
         mysql_user = os.getenv('MYSQL_USER')
@@ -117,10 +122,19 @@ class TwitterScraper():
         r.headers["User-Agent"] = "v2RecentSearchPython"
         return r
     
-    def aggregate_query_results(self, query_terms, requests_limit=15):
+    def aggregate_query_results(self, query_terms, requests_limit):
         '''
-        NEEDS DOCUMENTATION
+        This function repeats the query to Twitter and aggregates the results.
+        The Twitter API endpoint used has a requests limit of 450 per 15 minutes.
+        Required input:
+            - query_terms: the term(s) to be searched using Twitter's recent search
+            API endpoint.
+            - requests_limit: the maximum number of API requests sent during one
+            use of this scraper.
         '''
+
+        # The API allows you to specify a Tweet ID such that the API will only
+        # return Tweets after that Tweet.
         if self.use_since_id:
             since_id = self.get_since_id()
         else:
@@ -145,6 +159,7 @@ class TwitterScraper():
         original_tweet_df = results_df.copy(deep=True)
 
         while requests_count < requests_limit:
+            # Queries twitter
             json_results = self.query_twitter(query_terms, since_id=since_id, until_id=until_id)
             
             results_size = json_results['meta']['result_count']
@@ -169,13 +184,25 @@ class TwitterScraper():
 
                 results_df = pd.concat([request_results, results_df])
 
+                # Like the since_id, the API also allows you to specify a Tweet ID
+                # such that the API will only return Tweets before that Tweet.
+                # Because the recent search endpoint returns newest results first,
+                # we must repeatedly set the until_id as the oldest Tweet of the most
+                # recent query's results so we get older Tweets each query.
                 until_id = request_results['tweet_id'].iloc[0]
                 until_id = np.int64(until_id) - np.int64(1)
             
             if 'tweets' in json_results['includes']:
+                # json['includes']['tweets'] contains the tweets that were retweeted, quoted,
+                # or replied to in the main results (json_results['data']).
+                # json['includes']['users'] contains data about all the users whose tweets
+                # appeared in the main results.
                 referenced_tweets = self.process_query_results(
                     json_results['includes']['tweets'], json_results['includes']['users']
                     )
+                # Because this recent search endpoint does not include accurate metrics for
+                # retweets, we must use the data about the original tweets contained in
+                # json['includes']['tweets'] to sort out those missing metrics.
                 original_tweet_df = pd.concat([referenced_tweets, original_tweet_df])
                 original_tweet_df = original_tweet_df.drop_duplicates(subset='tweet_id', keep='first')
         
@@ -183,13 +210,30 @@ class TwitterScraper():
 
     def query_twitter(self, query_terms, since_id=None, until_id=None):
         '''
-        FIX DOCUMENTATION
         Queries Twitter.
         Parameters:
             query_terms: A string of all the search terms separated by spaces.
-                Should be different names for the same company or stock.
-            since_id: A 
-            until_id:
+            since_id: A Tweet ID such that the query will only return tweets from
+                after this tweet.
+            until_id: A Tweet ID such that the query will only return tweets from
+                before this tweet.
+        
+        Uses the recent search endpoint from Twitter's V2 API.
+        
+        The parameters used to query this endpoint include:
+            tweet.fields: data returned about the tweets returned by recent search
+                id: tweet ID
+                text: text of the tweet
+                created_at: datetime at which the tweet was created
+                public_metrics: like and retweet counts
+            expansions: additional data regarding the returned tweets
+                author_id: data about the users who authored the tweets returned.
+                referenced_tweets.id: data returned about the tweets that were retweeted,
+                    quoted, and replied to. Includes all fields specified in tweet.fields.
+            user.fields: specifies what data should be returned about users in expansions.author_id
+                public_metrics: specifies that follower counts should be returned.
+            max_results: specifies how many results should be returned for each query. The max possible
+                is 100.
         '''
         search_url = 'https://api.twitter.com/2/tweets/search/recent'
         
@@ -208,11 +252,22 @@ class TwitterScraper():
     
     def process_query_results(self, tweet_json, user_json=None):
         '''
-        NEEDS DOCUMENTATION
+        This function processes the results returned by the query.
+        As input, this function takes the json of the returned tweets and,
+        optionally, the json of users.
+        This function:
+            - adds follower counts of the Tweet authors to the dataframe
+            - converts created_at to a datetime format recognized by pandas
+            - cleans the texts of the Tweets
+            - Gets the polarities and sentiments of the tweets and add them to
+                the dataframe.
+            - Adds a time for when these results were queried.
+            - Sorts by created_at datetime so the tweets are organized from
+                oldest to newest.
         '''
         response_df = self.parse_tweet_list(tweet_json)
         
-        # Add follower counts of the Tweet posters to df
+        # Add follower counts of the Tweet authors to df
         if user_json:
             user_followers_dict = self.get_user_data(user_json)
             response_df['followers_count'] = response_df['author_id'].apply(lambda author_id: self.get_user_metrics(author_id, user_followers_dict))
@@ -258,7 +313,9 @@ class TwitterScraper():
 
     def parse_tweet_list(self, json_response):
         '''
-        NEEDS DOCUMENTATION
+        This function parses the json of tweets returned by the API.
+        This function breaks down the multi-level json into a single-level
+        dictionary which is then returned as a dataframe.
         '''
         tweet_dict = {
             'tweet_id': [],
@@ -293,7 +350,8 @@ class TwitterScraper():
 
     def get_user_data(self, users_list):
         '''
-        NEEDS DOCUMENTATION
+        This function takes the data from the users expansion and reformats
+        that data to a simple dictionary of user_id-follower_count key-value pairs.
         '''
         followers_count_dict = {}
         for user in users_list:
@@ -302,7 +360,9 @@ class TwitterScraper():
 
     def get_ot_metrics(self, json_response):
         '''
-        NEEDS DOCUMENTATION
+        This function takes the expansion of referenced tweets (retweeted, quote
+        tweeted, or replied to) and returns a dictionary of those tweets' metrics.
+        The keys are the tweet IDs and the values are tuples of retweet and like counts.
         '''
         original_tweet_list = json_response['includes']['tweets']
         original_tweet_dict = {}
@@ -312,7 +372,7 @@ class TwitterScraper():
 
     def get_user_metrics(self, user_id, followers_counts):
         '''
-        NEEDS DOCUMENTATION
+        Utility function to add follower counts to the results dataframe.
         '''
         if user_id in followers_counts:
             followers_count = followers_counts[user_id]
@@ -346,7 +406,8 @@ class TwitterScraper():
 
     def get_since_id(self):
         '''
-        NEEDS DOCUMENTATION
+        This function returns the Tweet ID of the newest Tweet stored in the
+        database. This Tweet ID will be used as the since ID, if necessary.
         '''
         # Import most recent Tweet ID from MySQL database
         mysql_query = '''
@@ -372,7 +433,7 @@ class TwitterScraper():
         mysql_query = '''
         SELECT retweet_count, like_count
         FROM stock_sentiment_project.''' + self.db_table + '''
-        WHERE tweet_id = ''' + tweet_id + ''';'''
+        WHERE tweet_id = ''' + str(tweet_id) + ''';'''
         tweet_in_db = pd.read_sql_query(mysql_query, self.engine)
         if tweet_in_db.shape[0] > 0:
             retweets = tweet_in_db['retweet_count'].iloc[0]
@@ -390,7 +451,7 @@ class TwitterScraper():
         mysql_query= '''
         SELECT SUM(retweet_count), SUM(like_count)
         FROM stock_sentiment_project.''' + self.db_table + '''
-        WHERE original_tweet_id = ''' + original_tweet_id + ''';'''
+        WHERE original_tweet_id = ''' + str(original_tweet_id) + ''';'''
         rt_metrics_in_db = pd.read_sql_query(mysql_query, self.engine)
         retweets = rt_metrics_in_db['SUM(retweet_count)'].iloc[0]
         likes = rt_metrics_in_db['SUM(like_count)'].iloc[0]
@@ -409,13 +470,37 @@ class TwitterScraper():
             return
         proportion = follower_dict[id]/sum(follower_dict.values())
         if total_likes:
-            results_df.loc[results_df['tweet_id'] == id, 'like_count'] = total_likes * proportion
+            results_df.loc[results_df['tweet_id'] == id, 'like_count'] = round(total_likes * proportion)
         if total_retweets:
-            results_df.loc[results_df['tweet_id'] == id, 'retweet_count'] = total_retweets * proportion
+            results_df.loc[results_df['tweet_id'] == id, 'retweet_count'] = round(total_retweets * proportion)
 
     def calculate_rt_metrics(self, original_tweet_df, results_df):
         '''
-        This function 
+        This function calculates the metrics for retweets. The API does not return
+        like and retweet counts for retweets so they must be estimated using the
+        like and retweet metrics of the original tweet, which is either included in
+        the results or in the referenced tweets expansion.
+        To clarify, this step is only taken for retweets - not for quote tweets or
+        replies.
+        To do this, we iterate through the dataframe of referenced tweets - i.e.
+        original tweets that were retweeted in the results.
+        For each original tweet, there are three paths:
+        1. The original tweet also appears in the results. In this case, its likes and
+        retweets are distributed between it and its retweets in the results proportional
+        to follower counts.
+        2. The original tweet appears in the database (it was scraped before). In this
+        case, its total likes and retweets and pulled from the database and compared
+        to the current likes and retweets to determine how many likes and retweets are
+        new and uncounted. These new likes and retweets are distributed among its
+        retweets in the results proportional to follower counts.
+        3. The original tweet is not in the database or the results. This only happens
+        if the original tweet was tweeted before we started scraping to the database.
+        In this case, the original tweet is added to the results. Its retweets and likes
+        are distributed between it and its retweets proportional to follower counts.
+        However, the original tweet probably does not have a follower count because its
+        user was not returned in the users expansion unless one of that users tweets appeared
+        in the results. If this is the case, the original tweet is given half of the metrics
+        and the other half is distributed among its retweets proportional to follower counts.
         '''
         results_df_copy = results_df.copy()
         for _, original_tweet in original_tweet_df.iterrows():
@@ -460,13 +545,19 @@ class TwitterScraper():
                 total_likes, total_retweets = original_tweet['like_count'], original_tweet['retweet_count']
 
                 relevant_subset['tweet_id'].apply(lambda id: self.dist_metrics(id, followers_dict, results_df, total_likes, total_retweets))
+        
+        return results_df
     
     def run(self):
+        '''
+        This function is the main function to be called by the user. It takes the input query terms
+        and requests limit and outputs the results of the query and processing.
+        '''
         # Main results dataframe and dataframe of original tweets (tweets which were retweeted at some point)
-        results_df, original_tweet_df = self.aggregate_query_results(self.query_terms)
+        results_df, original_tweet_df = self.aggregate_query_results(self.query_terms, self.requests_limit)
 
         # Now we need to update the public metrics of retweets. For more information on this step, see
         # the docstring at the beginning of the class.
-        self.calculate_rt_metrics(original_tweet_df, results_df)
+        results_df = self.calculate_rt_metrics(original_tweet_df, results_df)
 
         return results_df
