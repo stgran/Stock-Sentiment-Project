@@ -1,4 +1,4 @@
-from twitter_scraper_methods_class import TwitterScraper
+from twitter_scraper_class import TwitterScraper
 
 def main():
     scraper = TwitterScraper(query_terms='palantir', db_table='palantir_tweets', use_since_id=False)

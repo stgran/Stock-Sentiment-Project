@@ -1,13 +1,12 @@
-from operator import index
 import unittest
 import pandas as pd
 from datetime import datetime
 
-from twitter_scraper_methods_class import TwitterScraper
+from twitter_scraper_class import TwitterScraper
 
 class TestRTMetricsCalc(unittest.TestCase):
     '''
-    Testing important methods from twitter_scraper_methods_class.py.
+    Testing important methods from twitter_scraper_class.py.
     - TwitterScraper.dist_metrics()
     - TwitterScraper.calculate_rt_metrics()
     This testing module was written specifically to ensure these methods are
