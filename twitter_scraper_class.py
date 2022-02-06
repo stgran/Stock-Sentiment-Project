@@ -12,8 +12,6 @@ load_dotenv()
 
 class TwitterScraper():
     '''
-    NEEDS DOCUMENTATION
-
     Methods
         - connect_to_db(self)
         - bearer_oauth(self, r)
@@ -101,11 +99,11 @@ class TwitterScraper():
         # I have set this up to handle either mariadb or mysql because I run this on two
         # different computers which use these different SQL databases.
         try:
-            engine_str = 'mariadb+mariadbconnector://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
+            engine_str = f'mariadb+mariadbconnector://{mysql_user}:{mysql_pwd}@{mysql_host}/{mysql_db}'
             engine = sqlalchemy.create_engine(engine_str)
             print('Using mariadb database')
         except:
-            engine_str = 'mysql+pymysql://' + mysql_user + ':' + mysql_pwd + '@' + mysql_host  + '/' + mysql_db
+            engine_str = f'mysql+pymysql://{mysql_user}:{mysql_pwd}@{mysql_host}/{mysql_db}'
             engine = sqlalchemy.create_engine(engine_str)
             print('Using mysql database')
         
@@ -307,7 +305,7 @@ class TwitterScraper():
             ]]
 
         # Sort by datetime so the Tweets go from oldest to newest
-        response_df.sort_values(by='datetime', inplace=True)
+        response_df.sort_values(by='datetime', ascending=True, inplace=True)
 
         return response_df
 
