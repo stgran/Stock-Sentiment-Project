@@ -35,7 +35,7 @@ Because cryptocurrencies have no intrinsic value in the way that a company might
 |------|--------------------------|----------------------|
 |BTC   |Bitcoin                   |bitcoin, btc, $btc    |
 |ETH   |Ethereum                  |ethereum, eth, $eth   |
-|DOT   |Polkadot                  |polkadot, dot, $dot   |
+|DOT   |Polkadot                  |polkadot, $dot        |
 
 ### Stocks
 For stocks, I have chosen to focus on S&P 500 stocks. This will likely limit the applicability of any findings that emerge from this project but that is acceptable. Sticking with the S&P 500 should also be beneficial because it should be easier to find Tweets about these larger companies than it would for a random unknown stock.
@@ -79,7 +79,7 @@ The fifty stocks listed below were part of the S&P 500 as of February 6, 2022. E
 |IPG   |Interpublic Group        |Communication Services|interpublic, $ipg |
 |AAPL  |Apple                    |Information Technology|apple, $aapl, iphone, macbook |
 |XYL   |Xylem                    |Industrials           |xylem, $xyl |
-|O     |Realty Income Corporation|Real Estate           |realty income corporation, $o |
+|O     |Realty Income Corporation|Real Estate           |realty income, $o |
 |HPQ   |HP                       |Information Technology|hp, $hpq |
 |KEY   |KeyCorp                  |Financials            |keycorp, $key |
 |BEN   |Franklin Resources       |Financials            |franklin resources, $ben |
