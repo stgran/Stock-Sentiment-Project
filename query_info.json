@@ -1,0 +1,320 @@
+{
+    "American Water": {
+        "symbol": "AWK",
+        "query_terms": "\"american water\" OR $awk",
+        "tweet_table": "awk_tweets",
+        "stock_table": "awk_prices"
+    },
+    "Northern Trust": {
+        "symbol": "NTRS",
+        "query_terms": "\"northern trust\" OR $ntrs",
+        "tweet_table": "ntrs_tweets",
+        "stock_table": "ntrs_prices"
+    },
+    "Prologis": {
+        "symbol": "PLD",
+        "query_terms": "prologis OR $pld",
+        "tweet_table": "pld_tweets",
+        "stock_table": "pld_prices"
+    },
+    "Boston Scientific": {
+        "symbol": "BSX",
+        "query_terms": "\"boston scientific\" OR $bsx",
+        "tweet_table": "bsx_tweets",
+        "stock_table": "bsx_prices"
+    },
+    "Rockwell Automation": {
+        "symbol": "ROK",
+        "query_terms": "\"rockwell automation\" OR $rok",
+        "tweet_table": "rok_tweets",
+        "stock_table": "rok_prices"
+    },
+    "Ingersoll Rand": {
+        "symbol": "IR",
+        "query_terms": "\"ingersoll rand\" OR $ir",
+        "tweet_table": "ir_tweets",
+        "stock_table": "ir_prices"
+    },
+    "Equity Residential": {
+        "symbol": "EQR",
+        "query_terms": "\"equity residential\" OR $eqr",
+        "tweet_table": "eqr_tweets",
+        "stock_table": "eqr_prices"
+    },
+    "Paycom": {
+        "symbol": "PAYC",
+        "query_terms": "paycom OR $payc",
+        "tweet_table": "payc_tweets",
+        "stock_table": "payc_prices"
+    },
+    "Qorvo": {
+        "symbol": "QRVO",
+        "query_terms": "qorvo OR $qrvo",
+        "tweet_table": "qrvo_tweets",
+        "stock_table": "qrvo_prices"
+    },
+    "Amgen": {
+        "symbol": "AMGN",
+        "query_terms": "amgen OR $amgn",
+        "tweet_table": "amgn_tweets",
+        "stock_table": "amgn_prices"
+    },
+    "Newmont": {
+        "symbol": "NEM",
+        "query_terms": "newmont OR $nem",
+        "tweet_table": "nem_tweets",
+        "stock_table": "nem_prices"
+    },
+    "Target": {
+        "symbol": "TGT",
+        "query_terms": "target OR $tgt",
+        "tweet_table": "tgt_tweets",
+        "stock_table": "tgt_prices"
+    },
+    "Becton Dickinson": {
+        "symbol": "BDX",
+        "query_terms": "\"becton dickinson\" OR $bdx",
+        "tweet_table": "bdx_tweets",
+        "stock_table": "bdx_prices"
+    },
+    "Ceridian": {
+        "symbol": "CDAY",
+        "query_terms": "ceridian OR $cday",
+        "tweet_table": "cday_tweets",
+        "stock_table": "cday_prices"
+    },
+    "Lam Research": {
+        "symbol": "LRCX",
+        "query_terms": "\"lam research\" OR $lrcx",
+        "tweet_table": "lrcx_tweets",
+        "stock_table": "lrcx_prices"
+    },
+    "Mohawk Industries": {
+        "symbol": "MHK",
+        "query_terms": "\"mohawk industries\" OR $mhk",
+        "tweet_table": "mhk_tweets",
+        "stock_table": "mhk_prices"
+    },
+    "Phillips 66": {
+        "symbol": "PSX",
+        "query_terms": "\"phillips 66\" OR $psx",
+        "tweet_table": "psx_tweets",
+        "stock_table": "psx_prices"
+    },
+    "Pfizer": {
+        "symbol": "PFE",
+        "query_terms": "pfizer OR $pfe",
+        "tweet_table": "pfe_tweets",
+        "stock_table": "pfe_prices"
+    },
+    "IDEX Corporation": {
+        "symbol": "IEX",
+        "query_terms": "idex OR $iex",
+        "tweet_table": "iex_tweets",
+        "stock_table": "iex_prices"
+    },
+    "Oracle": {
+        "symbol": "ORCL",
+        "query_terms": "oracle OR $orcl",
+        "tweet_table": "orcl_tweets",
+        "stock_table": "orcl_prices"
+    },
+    "Ball": {
+        "symbol": "BLL",
+        "query_terms": "ball OR $bll",
+        "tweet_table": "bll_tweets",
+        "stock_table": "bll_prices"
+    },
+    "FactSet": {
+        "symbol": "FDS",
+        "query_terms": "factset OR $fds",
+        "tweet_table": "fds_tweets",
+        "stock_table": "fds_prices"
+    },
+    "Kinder Morgan": {
+        "symbol": "KMI",
+        "query_terms": "\"kinder morgan\" OR $kmi",
+        "tweet_table": "kmi_tweets",
+        "stock_table": "kmi_prices"
+    },
+    "Entergy": {
+        "symbol": "ETR",
+        "query_terms": "entergy OR $etr",
+        "tweet_table": "etr_tweets",
+        "stock_table": "etr_prices"
+    },
+    "Otis Worldwide": {
+        "symbol": "OTIS",
+        "query_terms": "\"otis worldwide\" OR $otis",
+        "tweet_table": "otis_tweets",
+        "stock_table": "otis_prices"
+    },
+    "News Corp (Class A)": {
+        "symbol": "NWSA",
+        "query_terms": "\"news corp\" OR $nwsa",
+        "tweet_table": "nwsa_tweets",
+        "stock_table": "nwsa_prices"
+    },
+    "Fastenal": {
+        "symbol": "FAST",
+        "query_terms": "fastenal OR $fast",
+        "tweet_table": "fast_tweets",
+        "stock_table": "fast_prices"
+    },
+    "Marriott International": {
+        "symbol": "MAR",
+        "query_terms": "marriott OR $mar",
+        "tweet_table": "mar_tweets",
+        "stock_table": "mar_prices"
+    },
+    "Thermo Fisher Scientific": {
+        "symbol": "TMO",
+        "query_terms": "\"thermo fisher\" OR $tmo",
+        "tweet_table": "tmo_tweets",
+        "stock_table": "tmo_prices"
+    },
+    "Caterpillar": {
+        "symbol": "CAT",
+        "query_terms": "caterpillar OR $cat",
+        "tweet_table": "cat_tweets",
+        "stock_table": "cat_prices"
+    },
+    "Interpublic Group": {
+        "symbol": "IPG",
+        "query_terms": "interpublic OR $ipg",
+        "tweet_table": "ipg_tweets",
+        "stock_table": "ipg_prices"
+    },
+    "Apple": {
+        "symbol": "AAPL",
+        "query_terms": "apple OR iphone OR macbook OR $aapl",
+        "tweet_table": "aapl_tweets",
+        "stock_table": "aapl_prices"
+    },
+    "Xylem": {
+        "symbol": "XYL",
+        "query_terms": "xylem OR $xyl",
+        "tweet_table": "xyl_tweets",
+        "stock_table": "xyl_prices"
+    },
+    "Realty Income Corporation": {
+        "symbol": "O",
+        "query_terms": "\"realty income\" OR $o",
+        "tweet_table": "o_tweets",
+        "stock_table": "o_prices"
+    },
+    "HP": {
+        "symbol": "HPQ",
+        "query_terms": "hp OR $hpq",
+        "tweet_table": "hpq_tweets",
+        "stock_table": "hpq_prices"
+    },
+    "KeyCorp": {
+        "symbol": "KEY",
+        "query_terms": "keycorp OR keybank OR $key",
+        "tweet_table": "key_tweets",
+        "stock_table": "key_prices"
+    },
+    "Franklin Resources": {
+        "symbol": "BEN",
+        "query_terms": "\"franklin resources\" OR $ben",
+        "tweet_table": "ben_tweets",
+        "stock_table": "ben_prices"
+    },
+    "Idexx Laboratories": {
+        "symbol": "IDXX",
+        "query_terms": "idexx OR $idxx",
+        "tweet_table": "idxx_tweets",
+        "stock_table": "idxx_prices"
+    },
+    "Nasdaq": {
+        "symbol": "NDAQ",
+        "query_terms": "nasdaq OR $ndaq",
+        "tweet_table": "ndaq_tweets",
+        "stock_table": "ndaq_prices"
+    },
+    "Welltower": {
+        "symbol": "WELL",
+        "query_terms": "welltower OR $well",
+        "tweet_table": "well_tweets",
+        "stock_table": "well_prices"
+    },
+    "Allstate": {
+        "symbol": "ALL",
+        "query_terms": "allstate OR $all",
+        "tweet_table": "all_tweets",
+        "stock_table": "all_prices"
+    },
+    "Atmos Energy": {
+        "symbol": "ATO",
+        "query_terms": "atmos OR $ato",
+        "tweet_table": "ato_tweets",
+        "stock_table": "ato_prices"
+    },
+    "Alaska Air Group": {
+        "symbol": "ALK",
+        "query_terms": "\"alaska airlines\" OR \"horizon airlines\" OR \"alaska air\" OR $alk",
+        "tweet_table": "alk_tweets",
+        "stock_table": "alk_prices"
+    },
+    "Stryker Corporation": {
+        "symbol": "SYK",
+        "query_terms": "stryker OR $syk",
+        "tweet_table": "syk_tweets",
+        "stock_table": "syk_prices"
+    },
+    "Charles River": {
+        "symbol": "CRL",
+        "query_terms": "\"charles river\" OR $crl",
+        "tweet_table": "crl_tweets",
+        "stock_table": "crl_prices"
+    },
+    "VF Corporation": {
+        "symbol": "VFC",
+        "query_terms": "\"vf corporation\" OR $vfc",
+        "tweet_table": "vfc_tweets",
+        "stock_table": "vfc_prices"
+    },
+    "Advance Auto Parts": {
+        "symbol": "AAP",
+        "query_terms": "\"advance auto parts\" OR $aap",
+        "tweet_table": "aap_tweets",
+        "stock_table": "aap_prices"
+    },
+    "Dollar General": {
+        "symbol": "DG",
+        "query_terms": "\"dollar general\" OR $dg",
+        "tweet_table": "dg_tweets",
+        "stock_table": "dg_prices"
+    },
+    "Martin Marietta Materials": {
+        "symbol": "MLM",
+        "query_terms": "\"martin marietta\" OR $mlm",
+        "tweet_table": "mlm_tweets",
+        "stock_table": "mlm_prices"
+    },
+    "Gap": {
+        "symbol": "GPS",
+        "query_terms": "gap OR \"old navy\" OR \"banana republic\" OR athleta OR $gps",
+        "tweet_table": "gps_tweets",
+        "stock_table": "gps_prices"
+    },
+    "Bitcoin": {
+        "symbol": "BTC",
+        "query_terms": "bitcoin OR btc OR $btc",
+        "tweet_table": "btc_tweets",
+        "stock_table": "btc_prices"
+    },
+    "Ehtereum": {
+        "symbol": "ETH",
+        "query_terms": "ethereum OR eth OR $eth",
+        "tweet_table": "eth_tweets",
+        "stock_table": "eth_prices"
+    },
+    "Polkadot": {
+        "symbol": "DOT",
+        "query_terms": "polkadot OR $dot",
+        "tweet_table": "dot_tweets",
+        "stock_table": "dot_prices"
+    }
+}
