@@ -33,41 +33,40 @@ def connect_to_db():
     
     return engine
 
-def create_tweet_table(table_name):
-    engine = connect_to_db()
-    if not engine.dialect.has_table(engine.connect(), table_name):
-        metadata = MetaData(engine)
-        Table(
-            table_name,
-            metadata,
-            Column('tweet_id', Integer, primary_key=True, nullable=False),
-            Column('datetime', DateTime),
-            Column('tweet_text', String),
-            Column('polarity', Float),
-            Column('sentiment', String),
-            Column('author_id', Integer),
-            Column('followers_count', Integer),
-            Column('retweet_count', Integer),
-            Column('like_count', Integer),
-            Column('collection_time', DateTime),
-            Column('original_tweet_id', Integer)
-        )
-        metadata.create_all()
+engine = connect_to_db()
 
-def create_stock_table(table_name):
-    engine = connect_to_db()
-    if not engine.dialect.has_table(engine.connect(), table_name):
-        metadata = MetaData(engine)
-        Table(
-            table_name,
-            metadata,
-            Column('date', DateTime, primary_key=True, nullable=False),
-            Column('1. open', Float),
-            Column('2. high', Float),
-            Column('3. low', Float),
-            Column('4. close', Float),
-            Column('5. volumne', Integer)
-        )
+def create_tweet_table(table_name, engine):
+    metadata = MetaData(engine)
+    Table(
+        table_name,
+        metadata,
+        Column('tweet_id', Integer, primary_key=True, nullable=False),
+        Column('datetime', DateTime),
+        Column('tweet_text', String(255)),
+        Column('polarity', Float),
+        Column('sentiment', String(255)),
+        Column('author_id', Integer),
+        Column('followers_count', Integer),
+        Column('retweet_count', Integer),
+        Column('like_count', Integer),
+        Column('collection_time', DateTime),
+        Column('original_tweet_id', Integer)
+    )
+    metadata.create_all()
+
+def create_stock_table(table_name, engine):
+    metadata = MetaData(engine)
+    Table(
+        table_name,
+        metadata,
+        Column('date', DateTime, primary_key=True, nullable=False),
+        Column('1. open', Float),
+        Column('2. high', Float),
+        Column('3. low', Float),
+        Column('4. close', Float),
+        Column('5. volumne', Integer)
+    )
+    metadata.create_all()
 
 with open('query_info.json') as f:
     query_info = json.load(f)
@@ -77,7 +76,7 @@ for company in query_info:
     stock_table_name = query_info[company]['stock_table']
 
     print(f'Creating Tweet table for {company}')
-    create_tweet_table(tweet_table_name)
+    create_tweet_table(tweet_table_name, engine)
 
     print(f'Creating stock table for {company}')
-    create_stock_table(stock_table_name)
+    create_stock_table(stock_table_name, engine)
