@@ -49,13 +49,16 @@ def main():
         query_terms = query_info[company]['query_terms'] # Search terms
         tweet_table = query_info[company]['tweet_table'] # Destination table
         # Import and run our Twitter scraper
-        twitter_scraper = TwitterScraper(query_terms=query_terms, db_table=tweet_table, use_since_id=False)
+        twitter_scraper = TwitterScraper(query_terms=query_terms, db_table=tweet_table, use_since_id=True)
         twitter_results = twitter_scraper.run()
 
         symbol = query_info[company]['symbol'] # Stock symbol
         stock_table = query_info[company]['stock_table'] # Destination table
         # Import and run our AlphaVantage scraper
-        stock_scraper = AlphaVantageScraper(db_table=stock_table, symbol=symbol)
+        if company in ['Bitcoin', 'Ethereum', 'Polkadot']:
+            stock_scraper = AlphaVantageScraper(db_table=stock_table, symbol=symbol, endpoint='CRYPTO_INTRADAY')
+        else:
+            stock_scraper = AlphaVantageScraper(db_table=stock_table, symbol=symbol, endpoint='TIME_SERIES_INTRADAY')
         stock_results = stock_scraper.run()
 
         # Send the Twitter results to the respective table in the db
@@ -63,7 +66,7 @@ def main():
             name=tweet_table,
             con=engine,
             index=False,
-            if_exists='replace'
+            if_exists='append'
         )
 
         # Send the stock results to the respective table in the db
@@ -71,7 +74,7 @@ def main():
             name=stock_table,
             con=engine,
             index=False,
-            if_exists='replace'
+            if_exists='append'
         )
 
     # AlphaVantage's API limits us to 5 requests per minute so we sleep for 21
