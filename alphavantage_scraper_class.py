@@ -78,8 +78,7 @@ class AlphaVantageScraper():
         url = f'https://www.alphavantage.co/query?function={self.endpoint}&symbol={self.symbol}&interval={self.interval}&outputsize=full&apikey={ALPHAVANTAGE_API_KEY}'
         request_result = requests.get(url).json() # Return the request as a json object
         # Alphavantage return metadata and the actual data. We only want the actual data.
-        
-        json_data = request_result[f'Time Series Intraday ({self.interval})']
+        json_data = request_result[f'Time Series ({self.interval})']
         
         return json_data
     
@@ -97,8 +96,9 @@ class AlphaVantageScraper():
 
         # Get the latest date of price data in the db
         cutoff_date = self.get_cutoff_date()
-        # We want to filter out data we already have.
-        data = data[data['date'] > cutoff_date]
+        if cutoff_date:
+            # We want to filter out data we already have.
+            data = data[data['date'] > cutoff_date]
 
         return data
 
@@ -113,12 +113,13 @@ class AlphaVantageScraper():
 
         cutoff_date_df = pd.read_sql_query(mysql_query, self.engine)
 
-        cutoff_date = cutoff_date_df['date'].iloc[0]
-
-        return cutoff_date
+        if cutoff_date_df.empty:
+            return None
+        else:
+            cutoff_date = cutoff_date_df['date'].iloc[0]
+            return cutoff_date
     
     def run(self):
-        results_json = self.query_alphavantage()
         if self.endpoint == 'CRYPTO_INTRADAY':
             results_json = self.query_crypto()
         elif self.endpoint == 'TIME_SERIES_INTRADAY':
