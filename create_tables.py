@@ -1,6 +1,6 @@
 from curses import meta
 from ipaddress import collapse_addresses
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Date, String, Float
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, DateTime, String, Float
 import os
 import json
 
@@ -41,7 +41,7 @@ def create_tweet_table(table_name):
             table_name,
             metadata,
             Column('tweet_id', Integer, primary_key=True, nullable=False),
-            Column('datetime', Date),
+            Column('datetime', DateTime),
             Column('tweet_text', String),
             Column('polarity', Float),
             Column('sentiment', String),
@@ -49,7 +49,7 @@ def create_tweet_table(table_name):
             Column('followers_count', Integer),
             Column('retweet_count', Integer),
             Column('like_count', Integer),
-            Column('collection_time', Date),
+            Column('collection_time', DateTime),
             Column('original_tweet_id', Integer)
         )
         metadata.create_all()
@@ -61,7 +61,7 @@ def create_stock_table(table_name):
         Table(
             table_name,
             metadata,
-            Column('date', Date, primary_key=True, nullable=False),
+            Column('date', DateTime, primary_key=True, nullable=False),
             Column('1. open', Float),
             Column('2. high', Float),
             Column('3. low', Float),
