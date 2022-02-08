@@ -537,6 +537,8 @@ class TwitterScraper():
                 else:
                     followers_dict[original_tweet['tweet_id']] = sum(followers_dict.values())
 
+                original_tweet['followers_count'] = 1
+
                 relevant_subset = relevant_subset.append(original_tweet)
                 results_df = results_df.append(original_tweet)
 
