@@ -305,7 +305,7 @@
         "tweet_table": "btc_tweets",
         "stock_table": "btc_prices"
     },
-    "Ehtereum": {
+    "Ethereum": {
         "symbol": "ETH",
         "query_terms": "ethereum OR eth OR \"$eth\"",
         "tweet_table": "eth_tweets",
