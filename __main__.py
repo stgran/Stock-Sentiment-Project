@@ -44,6 +44,8 @@ def main():
 
     # Iterate over the companies
     for company in query_info:
+        print(company) # Print the name of the company
+        
         query_terms = query_info[company]['query_terms'] # Search terms
         tweet_table = query_info[company]['tweet_table'] # Destination table
         # Import and run our Twitter scraper
