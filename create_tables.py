@@ -35,7 +35,7 @@ def connect_to_db():
 
 def create_tweet_table(table_name):
     engine = connect_to_db()
-    if not engine.dialect.has_table(engine, table_name):
+    if not engine.dialect.has_table(engine.connect(), table_name):
         metadata = MetaData(engine)
         Table(
             table_name,
@@ -56,7 +56,7 @@ def create_tweet_table(table_name):
 
 def create_stock_table(table_name):
     engine = connect_to_db()
-    if not engine.dialect.has_table(engine, table_name):
+    if not engine.dialect.has_table(engine.connect(), table_name):
         metadata = MetaData(engine)
         Table(
             table_name,
