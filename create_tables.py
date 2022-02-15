@@ -1,5 +1,3 @@
-from curses import meta
-from ipaddress import collapse_addresses
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, DateTime, String, Float
 import os
 import json
